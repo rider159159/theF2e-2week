@@ -18,8 +18,12 @@
       @mouseup="finishedPosition('up')"
       @mouseleave="finishedPosition"
       @mousemove="draw"
-
+      @touchstart="startPosition"
+      @touchend="finishedPosition('up')"
+      @touchcancel="finishedPosition"
+      @touchmove="draw"
       :style="`background-color:#dfdfdf; `"
+
       ></canvas>
       <img v-if="showImage" :src="showImage" class="show-img" width="250" height="150" style="border: 1px solid" />
     </div>

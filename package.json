@@ -12,6 +12,7 @@
     "aos": "^2.3.4",
     "axios": "^0.27.2",
     "js-cookie": "^3.0.1",
+    "pdfjs": "^2.4.7",
     "pinia": "^2.0.18",
     "unplugin-auto-import": "^0.10.3",
     "unplugin-vue-components": "^0.21.2",
