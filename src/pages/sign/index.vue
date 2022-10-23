@@ -110,17 +110,15 @@ onMounted(() => {
   ctx = canvas.value.getContext("2d");
   ctx.lineWidth = 4;
   ctx.lineCap = "round";
-  console.log('test0')
   window.addEventListener('popstate',(e)=>{
     ctx.putImageData(e.state, 0, 0);
-  })
+})
 
 onBeforeUnmount(() => {
-  window.removeeventlistener('popstate',(e)=>{
+  window.removeEventListener('popstate',(e)=>{
     ctx.putImageData(e.state, 0, 0);
   })
-  
-  })
+})
 
   // event listener 手機板
   // canvas.addEventListener("touchstart", startPosition);

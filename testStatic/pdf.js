@@ -66,6 +66,7 @@ async function pdfToImage(pdfData) {
 
 // 此處 canvas 套用 fabric.js
 const canvas = new fabric.Canvas("canvas");
+console.log(canvas)
 
 document.querySelector("input").addEventListener("change", async (e) => {
   canvas.requestRenderAll();
@@ -73,6 +74,7 @@ document.querySelector("input").addEventListener("change", async (e) => {
   const pdfImage = await pdfToImage(pdfData);
 
   // 透過比例設定 canvas 尺寸
+  console.log(pdfImage.width,pdfImage.height)
   canvas.setWidth(pdfImage.width / window.devicePixelRatio);
   canvas.setHeight(pdfImage.height / window.devicePixelRatio);
 
@@ -83,7 +85,7 @@ document.querySelector("input").addEventListener("change", async (e) => {
 // canvas 出現簽名
 sign.addEventListener("click", () => {
   if (!sign.src) return;
-
+  console.log(sign.src)
   fabric.Image.fromURL(sign.src, function (image) {
     // 設定簽名出現的位置及大小，後續可調整
     image.top = 400;
