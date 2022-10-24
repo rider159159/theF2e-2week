@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="file" onchange="previewFile()">
+  <br>
+  <img src="" height="200" alt="Image preview...">
+
+  <script>
+
+    function previewFile() {
+      var preview = document.querySelector('img');
+      var file = document.querySelector('input[type=file]').files[0]; // 選擇的檔案
+      var reader = new FileReader();
+
+      reader.addEventListener("load", function (e) {
+        preview.src = reader.result; // reader.result 可替換 e.target.result
+      });
+
+      if (file) {
+        reader.readAsDataURL(file); // 檔案會轉成 DataURL (base64 ，同時會出發 load 事件
+      }
+    }
+  </script>
+</body>
+</html>

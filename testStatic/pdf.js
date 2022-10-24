@@ -66,7 +66,6 @@ async function pdfToImage(pdfData) {
 
 // 此處 canvas 套用 fabric.js
 const canvas = new fabric.Canvas("canvas");
-console.log(canvas)
 
 document.querySelector("input").addEventListener("change", async (e) => {
   canvas.requestRenderAll();
@@ -74,7 +73,6 @@ document.querySelector("input").addEventListener("change", async (e) => {
   const pdfImage = await pdfToImage(pdfData);
 
   // 透過比例設定 canvas 尺寸
-  console.log(pdfImage.width,pdfImage.height)
   canvas.setWidth(pdfImage.width / window.devicePixelRatio);
   canvas.setHeight(pdfImage.height / window.devicePixelRatio);
 
@@ -85,7 +83,6 @@ document.querySelector("input").addEventListener("change", async (e) => {
 // canvas 出現簽名
 sign.addEventListener("click", () => {
   if (!sign.src) return;
-  console.log(sign.src)
   fabric.Image.fromURL(sign.src, function (image) {
     // 設定簽名出現的位置及大小，後續可調整
     image.top = 400;
@@ -96,7 +93,7 @@ sign.addEventListener("click", () => {
   });
 });
 
-// // 引入套件所提供的物件
+// 引入套件所提供的物件
 const pdf = new jsPDF();
 
 const download = document.querySelector(".download");
@@ -114,6 +111,7 @@ download.addEventListener("click", () => {
   // 將檔案取名並下載
   pdf.save("download.pdf");
 });
+
 fabric.Object.prototype.transparentCorners = false;
 fabric.Object.prototype.cornerColor = 'blue';
 fabric.Object.prototype.cornerStyle = 'circle';
@@ -129,14 +127,14 @@ fabric.Object.prototype.controls.deleteControl = new fabric.Control({
 });
 
 function deleteObject(eventData, transform) {
-  var target = transform.target;
-  var canvas = target.canvas;
-      canvas.remove(target);
-      canvas.requestRenderAll();
+  const target = transform.target;
+  const canvas = target.canvas;
+  canvas.remove(target);
+  canvas.requestRenderAll();
 }
 
 function renderIcon(ctx, left, top, styleOverride, fabricObject) {
-  var size = this.cornerSize;
+  const size = this.cornerSize;
   ctx.save();
   ctx.translate(left, top);
   ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
