@@ -1,14 +1,12 @@
 <template>
   <div>
-    <ul class="flex">
-      <li>
-        <button class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white" @click="back()">Undo</button>
-      </li>
-      <li>
-        <button class="border-[#fe24b5] bg-[#fe24b5] p-2 text-white" @click="forward()">Redo</button>
-      </li>
-    </ul>
-    <div class="flex">
+    <div>
+      <div class="flex items-center">
+        <strong class="mr-4 text-xl">color:</strong>
+        <div v-for="color in colorArray" :key="color">
+          <div @click="colorMain = color.value" :class="`bg-${color.text}` " class="w-[50px] h-[50px] rounded-full mr-4"></div>
+        </div>
+      </div>
       <canvas ref="canvas"
         id="canvas"
         width="500"
@@ -39,7 +37,26 @@
   let showImage = ref('')
   let canvas = ref(null)
   let ctx = ref(null)
-
+  const colorMain = ref('#000')
+  const colorArray = [
+    {
+      text:'blue',
+      value:'#0000FF'
+    },
+    {
+      text:'red',
+      value:'#FF0000'
+    },
+    {
+      text:'black',
+      value:'#000'
+    },
+    {
+      text:'green',
+      value:'#01936f'
+    }
+      ]
+  
   // 取得滑鼠 / 手指在畫布上的位置
   function getPaintPosition(e) {
     const canvasSize = canvas.value.getBoundingClientRect();
@@ -68,6 +85,7 @@
     isPainting.value = false;
     ctx.beginPath();
     if(action === 'up'){
+      console.log('end')
       let tempCanvas = ctx.getImageData(0, 0, canvas.value.width, canvas.value.height);
       window.history.pushState(tempCanvas, null);
     }
@@ -82,6 +100,8 @@
     const paintPosition = getPaintPosition(e);
 
     // 移動滑鼠位置並產生圖案
+    ctx.strokeStyle = colorMain.value
+
     ctx.lineTo(paintPosition.x, paintPosition.y);
     ctx.stroke();
   }
@@ -104,24 +124,24 @@
   function forward (){
     window.history.forward()
   }
-
   onMounted(() => {
     ctx = canvas.value.getContext("2d");
     ctx.lineWidth = 4;
     ctx.lineCap = "round";
-    window.addEventListener('popstate',(e)=>{
-      ctx.putImageData(e.state, 0, 0);
   })
-
-  onBeforeUnmount(() => {
-    window.removeEventListener('popstate',(e)=>{
-      ctx.putImageData(e.state, 0, 0);
-    })
-  })
-
-})
 </script>
 
-<style>
-
+<style scoped>
+.bg-blue{
+  background-color: blue;
+}
+.bg-red{
+  background-color: #FF0000;
+}
+.bg-black{
+  background-color: #000;
+}
+.bg-green{
+  background-color: #01936f;
+}
 </style>

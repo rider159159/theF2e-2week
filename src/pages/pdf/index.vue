@@ -132,7 +132,6 @@ function deleteObject(eventData, transform) {
 
 function renderIcon(ctx, left, top, styleOverride, fabricObject) {
   const size = this.cornerSize;
-  console.log(img)
   ctx.save();
   ctx.translate(left, top);
   ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
