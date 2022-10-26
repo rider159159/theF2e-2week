@@ -1,17 +1,34 @@
 <template>
-  <div>
-    <div>
-      <div class="flex items-center">
-        <strong class="mr-4 text-xl">color:</strong>
-        <div v-for="color in colorArray" :key="color">
-          <div @click="colorMain = color.value" :class="`bg-${color.text}` " class="w-[50px] h-[50px] rounded-full mr-4"></div>
+  <section>
+    <h1 class="w-full text-center text-[40px] text-[#293845] mb-4">極速簽名 LOGO</h1>
+    <div class="shadow-lg mb-[100px] p-3">
+      <div class="border-l border-gray-300">
+        <div class="pl-8 py-4 text-[30px] font-bold text-gray-600 bg-gray-300">簽名可直接用在簽署任何文件時</div>
+        <div class="pl-8">
+          <p class="text-[40px] font-bold my-4">簽名</p>
+          <p class="text-[32px] font-bold my-4">手寫</p>
+          <div v-if="!signImgStatus1" @click="modalController1= true" class="cursor-pointer text-[24px] rounded-xl border border-gray-500 w-[300px] text-center py-4 mb-8">創建簽名</div>
+          <img v-else :src="signImgSrc1" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center py-4 mb-14" alt="">
+          <div class="py-4 cursor-pointer text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14">創建簽名縮寫</div>
+          <div class="flex">
+            <p class="text-[32px] font-bold my-4 mr-4">圖片</p>
+            <span class="text-gray-300 text-[32px] font-bold my-4">[清除全部]</span>
+          </div>
+            <label for="inputInput" class="flex justify-center items-center w-[150px] h-[150px] text-blue cursor-pointer text-[24px] rounded-xl border border-gray-500 p-4">
+              <input class="hidden" type="file" id="inputInput" />
+              <span class="text-[#596AF2] font-bold">選擇檔案</span>
+            </label>
         </div>
       </div>
+    </div>
+  </section>
+  <Modal @closeModal="modalController1 = false" :modalController="modalController1" width="w-full md:w-2/3 lg:w-1/2">
+    <div class="flex flex-col items-center justify-center">
       <canvas ref="canvas"
         id="canvas"
         width="500"
         height="300"
-        style="border: 1px solid #000"
+        style="border: 1px solid #D1D5DB; border-radius: 25px; "
         @mousedown="startPosition"
         @mouseup="finishedPosition('up')"
         @mouseleave="finishedPosition"
@@ -20,16 +37,21 @@
         @touchend="finishedPosition('up')"
         @touchcancel="finishedPosition"
         @touchmove="draw"
-        :style="`background-color:#dfdfdf; `"
+        :style="`background-color:#F5F5F5; `"
       ></canvas>
       <img v-if="showImage" :src="showImage" class="show-img" width="250" height="150" style="border: 1px solid" />
+      <div class="flex mt-10">
+        <div class="flex items-center">
+          <div v-for="color in colorArray" :key="color">
+            <div @click="colorMain = color.value" :class="[colorMain===color.value ? '!border-[#F57601]' : '' ,`bg-${color.text}`]" class="w-[30px] h-[30px] rounded-full mr-4 border-2 border-transparent"></div>
+          </div>
+        </div>
+        <button @click="reset" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Clear</button>
+        <button @click="saveImage" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Save</button>
+        <router-link v-if="showImage" to="/pdf" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white inline-block">下一步</router-link>
+      </div>
     </div>
-    <div class="flex">
-      <button @click="reset" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Clear</button>
-      <button @click="saveImage" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Save</button>
-      <router-link v-if="showImage" to="/pdf" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white inline-block">下一步</router-link>
-    </div>
-  </div>
+  </Modal>
 </template>
 
 <script setup>
@@ -37,6 +59,9 @@
   let showImage = ref('')
   let canvas = ref(null)
   let ctx = ref(null)
+  let signImgStatus1 = ref(false)
+  let signImgSrc1 = ref('')
+  let modalController1 = ref(false)
   const colorMain = ref('#000')
   const colorArray = [
     {
@@ -55,8 +80,8 @@
       text:'green',
       value:'#01936f'
     }
-      ]
-  
+  ]
+
   // 取得滑鼠 / 手指在畫布上的位置
   function getPaintPosition(e) {
     const canvasSize = canvas.value.getBoundingClientRect();
@@ -99,6 +124,7 @@
     // 移動滑鼠位置並產生圖案
     ctx.value.lineTo(paintPosition.x, paintPosition.y);
     ctx.value.stroke();
+    console.log(e)
   }
 
   // 重新設定畫布
@@ -108,10 +134,13 @@
 
   // 按下儲存按鈕
   function saveImage() {
+    signImgStatus1.value = true
+
     // 圖片儲存的類型選擇 png ，並將值放入 img 的 src
     const newImg = canvas.value.toDataURL("image/png");
-    showImage.value = newImg;
+    signImgSrc1.value = newImg;
     localStorage.setItem('signImage', newImg)
+    modalController1.value = false
   }
   onMounted(() => {
     ctx.value = canvas.value.getContext("2d");

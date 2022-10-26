@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.opacityTransition-enter-active,
+.opacityTransition-leave-active {
+  transition: opacity 0.3s;
+}
+
+.opacityTransition-enter,
+.opacityTransition-leave-active {
+  opacity: 0;
+}
+
+/* Slide-in-up animation*/
+.slide-in-up-enter-active, .slide-in-up-leave-active {
+  transition: all .5s;
+  transform: translateY(0);
+}
+.slide-in-up-enter, .slide-in-up-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
