@@ -83,12 +83,7 @@
   // 結束繪圖時，將狀態關閉，並產生新路徑
   function finishedPosition(action) {
     isPainting.value = false;
-    ctx.beginPath();
-    if(action === 'up'){
-      console.log('end')
-      let tempCanvas = ctx.getImageData(0, 0, canvas.value.width, canvas.value.height);
-      window.history.pushState(tempCanvas, null);
-    }
+    ctx.value.beginPath();
   }
 
   // 繪圖過程
@@ -98,17 +93,17 @@
 
     // 取得滑鼠 / 手指在畫布上的 x, y 軸位置位置
     const paintPosition = getPaintPosition(e);
-
+    
+    // 選擇顏色
+    ctx.value.strokeStyle = colorMain.value
     // 移動滑鼠位置並產生圖案
-    ctx.strokeStyle = colorMain.value
-
-    ctx.lineTo(paintPosition.x, paintPosition.y);
-    ctx.stroke();
+    ctx.value.lineTo(paintPosition.x, paintPosition.y);
+    ctx.value.stroke();
   }
 
   // 重新設定畫布
   function reset() {
-    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+    ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
   }
 
   // 按下儲存按鈕
@@ -118,16 +113,10 @@
     showImage.value = newImg;
     localStorage.setItem('signImage', newImg)
   }
-  function back (){
-    window.history.back()
-  }
-  function forward (){
-    window.history.forward()
-  }
   onMounted(() => {
-    ctx = canvas.value.getContext("2d");
-    ctx.lineWidth = 4;
-    ctx.lineCap = "round";
+    ctx.value = canvas.value.getContext("2d");
+    ctx.value.lineWidth = 4;
+    ctx.value.lineCap = "round";
   })
 </script>
 
