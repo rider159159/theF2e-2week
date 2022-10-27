@@ -5,7 +5,7 @@ import generatedRoutes from 'virtual:generated-pages'
 const routes = setupLayouts(generatedRoutes)
 
 const router = createRouter({
-  history: createWebHashHistory (),
+  history: createWebHashHistory ('/step1'),
   routes,
   // https://router.vuejs.org/guide/advanced/scroll-behavior.html#delaying-the-scroll
   scrollBehavior(from, to, savedPosition) {

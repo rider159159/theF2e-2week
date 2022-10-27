@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import './style.css'
+// import './style.css'
 import App from './App.vue'
 import router from './router.js'
 
@@ -9,6 +9,7 @@ const app = createApp(App)
 import { createPinia } from 'pinia'
 const pinia = createPinia()
 import stores from './store/index.js'
+import 'uno.css'
 app.provide('$stores', stores)
 
 app
