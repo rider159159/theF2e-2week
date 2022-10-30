@@ -21,11 +21,14 @@
             <p class="text-[32px] font-bold my-4 mr-4">圖片</p>
             <span class="text-gray-300 text-[32px] font-bold my-4">[清除全部]</span>
           </div>
-            <label v-if="dataURI==null"  for="inputInput" class="flex justify-center items-center w-[150px] h-[150px] text-blue cursor-pointer text-[24px] rounded-xl border border-gray-500 p-4">
-              <input @change="previewImage" class="hidden" type="file" id="inputInput" />
-              <span class="text-[#596AF2] font-bold">選擇檔案</span>
-            </label>
-            <img v-if="dataURI!==null" :src="dataURI" class="max-w-[50vw]" alt="">
+          <label v-if="dataURI==null"  for="inputInput" class="flex justify-center items-center w-[150px] h-[150px] text-blue cursor-pointer text-[24px] rounded-xl border border-gray-500 p-4">
+            <input @change="previewImage" class="hidden" type="file" id="inputInput" />
+            <span class="text-[#596AF2] font-bold">選擇檔案</span>
+          </label>
+          <img v-if="dataURI!==null" :src="dataURI" class="max-w-[50vw]" alt="">
+          <div class="w-full justify-center py-[50px]">
+            <router-link to="/step1" class="bg-blue text-white text-[28px] bg-[#586AF2] decoration-none py-4 px-6 rounded-lg cursor-pointer">進入下一步</router-link>
+          </div>
         </div>
       </div>
     </div>

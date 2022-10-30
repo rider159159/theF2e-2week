@@ -1,11 +1,11 @@
-import { createRouter, createWebHashHistory  } from "vue-router"
+import { createRouter, createWebHistory } from "vue-router"
 import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
 
 const routes = setupLayouts(generatedRoutes)
 
 const router = createRouter({
-  history: createWebHashHistory ('/step1'),
+  history: createWebHistory(),
   routes,
   // https://router.vuejs.org/guide/advanced/scroll-behavior.html#delaying-the-scroll
   scrollBehavior(from, to, savedPosition) {
@@ -16,6 +16,11 @@ const router = createRouter({
       }, 1310)
     })
   }
+})
+
+router.beforeEach((to, from) => {
+  if (to.path === from.path) return
+
 })
 
 export default router
