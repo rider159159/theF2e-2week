@@ -19,6 +19,7 @@
         <p class="text-[40px]">簽署完成</p>
       </div>
     </div>
+
     <div class="flex mb-8 justify-center">
       <div class="h-full">
         <span class="block text-[24px] py-2 px-4 mr-2 bg-[#f4f4f4] border-2 rounded-lg border-slate-400 text-slate-400">{{ fileName.length > 0 ? fileName : '請選擇簽署檔案' }}</span>
@@ -32,11 +33,11 @@
     <div class="w-full flex justify-center pt-[50px]">
       <router-link v-if="fileName.length > 0" to="/step2" class="bg-blue text-white text-[28px] bg-[#6558F5] decoration-none py-4 px-6 rounded-lg">前往簽署</router-link>
     </div>
+
   </section>
 </template>
 
 <script setup>
-console.log('test')
   import { useRoute } from 'vue-router'
   const route = useRoute()
   let dataURI = ref('')
@@ -46,17 +47,21 @@ console.log('test')
   function checkFile(e){
     const { name, size, type } = e.target.files[0]
     const [file] = e.target.files
+
     size >= 10485760 ? errorText.value = '檔案不可超過 10MB' : errorText.value = ''
     type.substr(-3,3)!=='pdf' ? errorText.value = '檔案格式錯誤' : errorText.value = ''
     if ( errorText.value.length === 0){
       fileName.value = name
       const fileReader = new FileReader(); 
+      // 將檔案轉成 Base 64
       fileReader.readAsDataURL(file);
       fileReader.onload = (event => {
-        dataURI.value = event.target.result;
+        // dataURI.value = event.target.result;
+        
+        // 下面方法和上面結果一樣，可以替換
+        dataURI.value = fileReader.result;
         localStorage.setItem('step1', dataURI.value)
       })
-
     }
   }
 

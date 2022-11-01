@@ -32,45 +32,46 @@
         </div>
       </div>
     </div>
-  </section>
-  <Modal @closeModal="modalController.status = false" :modalController="modalController.status" width="w-full md:w-2/3 lg:w-1/2">
-    <div class="flex flex-col items-center justify-center">
-      <canvas ref="canvas"
-        id="canvas"
-        width="500"
-        height="300"
-        style="border: 1px solid #D1D5DB; border-radius: 25px; "
-        @mousedown="startPosition"
-        @mouseup="finishedPosition('up')"
-        @mouseleave="finishedPosition"
-        @mousemove="draw"
-        @touchstart="startPosition"
-        @touchend="finishedPosition('up')"
-        @touchcancel="finishedPosition"
-        @touchmove="draw"
-        :style="`background-color:#F5F5F5; `"
-      ></canvas>
-      <img v-if="showImage" :src="showImage" class="show-img" width="250" height="150" style="border: 1px solid" />
-      <div class="flex mt-10">
-        <div class="flex items-center">
-          <div v-for="color in colorArray" :key="color">
-            <div @click="colorMain = color.value" :class="[colorMain===color.value ? '!border-[#F57601]' : '' ,`bg-${color.text}`]" class="w-[30px] h-[30px] rounded-full mr-4 border-2 border-transparent"></div>
+    <Modal @closeModal="modalController.status = false" :modalController="modalController.status" width="w-full md:w-2/3 lg:w-1/2">
+      <div class="flex flex-col items-center justify-center">
+        <canvas ref="canvas"
+          id="canvas"
+          width="500"
+          height="300"
+          style="border: 1px solid #D1D5DB; border-radius: 25px"
+
+          @mousedown="startPosition"
+          @mouseup="finishedPosition"
+          @mouseleave="finishedPosition"
+          @mousemove="draw"
+
+          @touchstart="startPosition"
+          @touchend="finishedPosition"
+          @touchcancel="finishedPosition"
+          @touchmove="draw"
+          :style="`background-color:#F5F5F5; `"
+        ></canvas>
+        <img v-if="showImage" :src="showImage" class="show-img" width="250" height="150" style="border: 1px solid" />
+        <div class="flex mt-10">
+          <div class="flex items-center">
+            <div v-for="color in colorArray" :key="color">
+              <div @click="colorMain = color.value" :class="[colorMain===color.value ? '!border-[#F57601]' : '' ,`bg-${color.text}`]" class="w-[30px] h-[30px] rounded-full mr-4 border-2 border-transparent"></div>
+            </div>
           </div>
+          <button @click="reset" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Clear</button>
+          <button @click="saveImage" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Save</button>
         </div>
-        <button @click="reset" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Clear</button>
-        <button @click="saveImage" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white">Save</button>
-        <router-link v-if="showImage" to="/pdf" class="border-[#fe24b5] bg-[#fe24b5] p-2 mr-2 text-white inline-block">下一步</router-link>
       </div>
-    </div>
-  </Modal>
+    </Modal>
+  </section>
 </template>
 
 <script setup>
-  // 畫布使用區
+  // canvas 相關操作
   let isPainting = ref(false)
   let showImage = ref('')
-  let canvas = ref(null)
-  let ctx = ref(null)
+  let canvas = ref(null) // 直接指 canvas DOM
+  let ctx = ref(null) // canvas 設定模式後的物件
 
   const colorMain = ref('#000')
   const colorArray = [
@@ -91,23 +92,6 @@
       value:'#01936f'
     }
   ]
-
-  // 取得滑鼠 / 手指在畫布上的位置
-  function getPaintPosition(e) {
-    const canvasSize = canvas.value.getBoundingClientRect();
-
-    if (e.type === "mousemove") {
-      return {
-        x: e.clientX - canvasSize.left,
-        y: e.clientY - canvasSize.top,
-      };
-    } else {
-      return {
-        x: e.touches[0].clientX - canvasSize.left,
-        y: e.touches[0].clientY - canvasSize.top,
-      };
-    }
-  }
 
   // 開始繪圖時，將狀態開啟
   function startPosition(e) {
@@ -134,7 +118,23 @@
     // 移動滑鼠位置並產生圖案
     ctx.value.lineTo(paintPosition.x, paintPosition.y);
     ctx.value.stroke();
-    console.log(e)
+  }
+
+  // 取得滑鼠 / 手指在畫布上的位置
+  function getPaintPosition(e) {
+    const canvasSize = canvas.value.getBoundingClientRect();
+
+    if (e.type === "mousemove") {
+      return {
+        x: e.clientX - canvasSize.left,
+        y: e.clientY - canvasSize.top,
+      };
+    } else {
+      return {
+        x: e.touches[0].clientX - canvasSize.left,
+        y: e.touches[0].clientY - canvasSize.top,
+      };
+    }
   }
 
   // 重新設定畫布
@@ -142,7 +142,8 @@
     ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
   }
 
-  // 畫面對應區
+
+  // canvas 外其餘畫面操作
   let signImgStatus1 = ref(false)
   let signImgSrc1 = ref('')
   let signImgStatus2 = ref(false)
@@ -158,7 +159,6 @@
   function saveImage() {
     // 圖片儲存的類型選擇 png ，並將值放入 img 的 src
     const newImg = canvas.value.toDataURL("image/png");
-    console.log(newImg)
     switch ( modalController.value.action ) {
       case 1:
         signImgStatus1.value = true
