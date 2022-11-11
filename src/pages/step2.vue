@@ -26,14 +26,14 @@
       <canvas id="canvas" style="border: 1px solid #000"> </canvas>
     </div>
     <button @click="downloadPDF" class="download">download PDF</button>
+    <Modal @closeModal="modalController = false" :modalController="modalController" width="w-full md:w-2/3 lg:w-1/2">
+      <p class="w-full flex justify-center text-[32px]">選擇簽名</p>
+      <div class="flex flex-col justify-center items-center">
+        <img v-if="localsignImage1" @click="addSignImage(localsignImage1)" :src="localsignImage1" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
+        <img v-if="localsignImage2" @click="addSignImage(localsignImage2)" :src="localsignImage2" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
+      </div>
+    </Modal>
   </section>
-  <Modal @closeModal="modalController = false" :modalController="modalController" width="w-full md:w-2/3 lg:w-1/2">
-    <p class="w-full flex justify-center text-[32px]">選擇簽名</p>
-    <div class="flex flex-col justify-center items-center">
-      <img v-if="localsignImage1" @click="addSignImage(localsignImage1)" :src="localsignImage1" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
-      <img v-if="localsignImage2" @click="addSignImage(localsignImage2)" :src="localsignImage2" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
-    </div>
-  </Modal>
 </template>
 <script setup>
   pdfjsLib.GlobalWorkerOptions.workerSrc = "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
