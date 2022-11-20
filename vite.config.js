@@ -8,6 +8,7 @@ import Unocss from 'unocss/vite';
 import * as path from 'path';
 
 export default defineConfig({
+  base: '/theF2e-2week/',
   resolve: {
     alias: [
       { find: '@', replacement: path.resolve(__dirname, 'src') },
