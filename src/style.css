@@ -1,6 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.laFont{
+  font-family: 'Lato', sans-serif;
+}
+.ntFont{
+  font-family: 'Noto Sans TC', sans-serif;
+}
 
 .opacityTransition-enter-active,
 .opacityTransition-leave-active {
@@ -20,4 +23,12 @@
 .slide-in-up-enter, .slide-in-up-leave-to {
   opacity: 0;
   transform: translateY(-20px);
+}
+
+.sidebar .v3dp__popout{
+  background-color: #F2EFEF !important;
+
+}
+.sidebar .v3dp__elements button{
+  border-radius: 9px;
 }

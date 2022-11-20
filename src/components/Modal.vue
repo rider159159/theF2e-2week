@@ -4,10 +4,8 @@
       <transition name="opacityTransition">
         <div ref="modalScroll" :class="width" class="print:overflow-visible print:!max-h-full max-h-[75vh] bg-white rounded-md z-[120] pb-2 overflow-y-auto">
           <div class="px-4 pt-2 sticky top-0 z-10 bg-white print:hidden">
-            <div class="flex w-full justify-end">
-              <span class="cursor-pointer text-2xl" @click="closeModal()">
-                x
-              </span>
+            <div @click.prevent="closeModal" class="flex w-full justify-end">
+              <img class="pt-4 cursor-pointer" src="@/assets/image/index/close.png" alt="">
             </div>
           </div>
 

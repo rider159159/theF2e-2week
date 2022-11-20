@@ -1,40 +1,47 @@
 <template>
-  <section class="md:px-8 md:mx-auto">
-    <h1 class="w-full text-center text-[40px] text-[#293845] mb-4">極速簽名 LOGO</h1>
-    <div class="w-full flex justify-center items-center">
-      <router-link to="/step1" :class="{'text-[#6558F5]':route.fullPath==='/step1'}" class="text] text-[28px] mr-6">開始簽名</router-link>
-      <router-link to="/createSign" :class="{'text-[#6558F5]':route.fullPath==='/createSign'}" class="text-[28px]">建立簽名</router-link>
+  <section class="relative">
+    <div class="fixed w-full bg-primary py-8px pl-24px">
+      <img class="w-99px h-56px" src="@/assets/image/index/logo.png" alt="">
     </div>
-    <div class="w-full flex justify-around items-center pt-[50px]">
-      <div class="flex flex-col items-center">
-        <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#D1EFEC]">1</span>
-        <p class="text-[40px]">上傳簽署檔案</p>
+    <SideBar @getSignImage="addSignImage" @getDate="addDate"></SideBar>
+    <div class="md:px-8 md:mx-auto">
+      <h1 class="w-full text-center text-[40px] text-[#293845] mb-4">極速簽名 LOGO</h1>
+      <div class="w-full flex justify-center items-center">
+        <router-link to="/step1" :class="{'text-[#6558F5]':route.fullPath==='/step1'}" class="text] text-[28px] mr-6">開始簽名</router-link>
+        <router-link to="/createSign" :class="{'text-[#6558F5]':route.fullPath==='/createSign'}" class="text-[28px]">建立簽名</router-link>
       </div>
-      <div class="flex flex-col items-center">
-        <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#E0DEFD]">2</span>
-        <p class="text-[40px]">進行簽署</p>
+      <div class="w-full flex justify-around items-center pt-[50px]">
+        <div class="flex flex-col items-center">
+          <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#D1EFEC]">1</span>
+          <p class="text-[40px]">上傳簽署檔案</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#E0DEFD]">2</span>
+          <p class="text-[40px]">進行簽署</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#D1EFEC]">3</span>
+          <p class="text-[40px]">簽署完成</p>
+        </div>
       </div>
-      <div class="flex flex-col items-center">
-        <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#D1EFEC]">3</span>
-        <p class="text-[40px]">簽署完成</p>
+      <div class="flex justify-center w-full pt-[50px]">
+        <button @click="modalController = true" class="bg-blue text-white text-[28px] bg-[#6558F5] decoration-none py-4 px-6 rounded-lg cursor-pointer">選擇簽名檔</button>
       </div>
-    </div>
-    <div class="flex justify-center w-full pt-[50px]">
-      <button @click="modalController = true" class="bg-blue text-white text-[28px] bg-[#6558F5] decoration-none py-4 px-6 rounded-lg cursor-pointer">選擇簽名檔</button>
-    </div>
-    <div class="flex mb-8 justify-center pt-[50px]">
-      <canvas id="canvas" style="border: 1px solid #000"> </canvas>
-    </div>
+      <div class="flex mb-8 justify-center pt-[50px]">
+        <canvas id="canvas" style="border: 1px solid #000"> </canvas>
+      </div>
     <button @click="downloadPDF" class="download">download PDF</button>
-    <Modal @closeModal="modalController = false" :modalController="modalController" width="w-full md:w-2/3 lg:w-1/2">
+    </div>
+    <!-- <Modal @closeModal="modalController = false" :modalController="modalController" width="w-full md:w-2/3 lg:w-1/2">
       <p class="w-full flex justify-center text-[32px]">選擇簽名</p>
       <div class="flex flex-col justify-center items-center">
         <img v-if="localsignImage1" @click="addSignImage(localsignImage1)" :src="localsignImage1" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
         <img v-if="localsignImage2" @click="addSignImage(localsignImage2)" :src="localsignImage2" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
       </div>
-    </Modal>
+    </Modal> -->
   </section>
 </template>
+
 <script setup>
   pdfjsLib.GlobalWorkerOptions.workerSrc = "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
   import { fabric } from "fabric"
@@ -97,15 +104,17 @@
   }
 
   // 設置 abric 介面、設置刪除按鈕
-  function fabricInit(){
-    fabric.Object.prototype.transparentCorners = false;
-    fabric.Object.prototype.cornerColor = 'blue';
+  function fabricInit(){ 
+    fabric.Object.prototype.transparentCorners = true;
+    fabric.Object.prototype.cornerColor = '#61ACC4';
     fabric.Object.prototype.cornerStyle = 'circle';
+    fabric.Object.prototype.padding = 10;
+    fabric.Object.prototype.borderScaleFactor  = 3
     // 刪除按鈕
     fabric.Object.prototype.controls.deleteControl = new fabric.Control({
       x: 0.5,
       y: -0.5,
-      offsetY: 16,
+      offsetY: 24,
       cursorStyle: 'pointer',
       mouseUpHandler: deleteObject,
       render: renderIcon,
@@ -143,6 +152,12 @@
     modalController.value = false
   }
 
+  function addDate(date){
+    console.log(date)
+    var text = new fabric.Text(date, { left: 100, top: 100 });
+    canvas.add(text);  
+  }
+
   function downloadPDF(){
     // 引入套件所提供的物件
     const pdf = new jsPDF();
@@ -158,6 +173,7 @@
     // 將檔案取名並下載
     pdf.save("download.pdf");
   }
+
   onMounted(() => {
     img = document.createElement('img');
     img.src = deleteIcon;

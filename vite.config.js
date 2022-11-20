@@ -4,15 +4,21 @@ import Pages from 'vite-plugin-pages'
 import Layouts from 'vite-plugin-vue-layouts'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import Unocss from 'unocss/vite'
-import { presetUno , presetAttributify } from 'unocss'
+import Unocss from 'unocss/vite';
+import * as path from 'path';
 
 export default defineConfig({
+  resolve: {
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, 'src') },
+    ],
+  },
   server: {
     host: '0.0.0.0',
   },
   plugins: [
     vue(),
+    Unocss(),
     Pages(),
     Layouts({
       layoutsDirs: 'src/layouts',
@@ -22,13 +28,6 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', 'vue-router'],
       dts: 'src/auto-imports.js'
-    }),
-    Unocss({ 
-      presets: [
-        presetAttributify({ /* preset options */}),
-        presetUno(),
-      ],
-
     }),
   ]
 })
