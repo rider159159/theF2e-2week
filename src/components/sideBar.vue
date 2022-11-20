@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed z-5 top-72px w-130px flex flex-col">
+  <div class="fixed z-30 top-72px w-130px flex flex-col">
     <div @click="choseId = 1" :class="{'bg-#F2EFEF': choseId === 1}" class="flex w-full justify-evenly py-20px cursor-pointer">
       <div class="flex flex-col justify-center items-center">
         <img class="pb-10px w-20px" src="@/assets/image/index/sign.png" alt="">
@@ -16,7 +16,7 @@
     </div>
   </div>
   
-  <div v-if="choseId > 0" class="sidebar fixed z-5 top-72px left-130px bg-#F2EFEF w-368px flex flex-col items-center">
+  <div v-if="choseId > 0" class="sidebar fixed z-30 top-72px left-130px bg-#F2EFEF w-368px flex flex-col items-center">
     <div @click="choseId = 0" class="w-full flex justify-end mt-10px mr-10px cursor-pointer">
       <img class="py-10px px-20px" src="@/assets/image/index/right.png" alt="">
     </div>

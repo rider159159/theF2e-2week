@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="flex flex-col items-center z-5">
-        <div :class="{'bg-primary text-white':stepNum>=2}" class="border-primary border-5px text-primary flex justify-center items-center text-32px font-bold w-60px h-60px rounded-full mb-8px bg-white">
+        <div :class="{'!bg-primary !text-white':stepNum>=2}" class="border-primary border-5px text-primary flex justify-center items-center text-32px font-bold w-60px h-60px rounded-full mb-8px bg-white">
           2
         </div>
         <div :class="{'opacity-100':stepNum>=2}"  class=" opacity-40 text-primary laFont font-bold">
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="flex flex-col items-center z-5">
-        <div :class="{'bg-primary text-white':stepNum>=2}" class="border-primary border-5px text-primary flex justify-center items-center text-32px font-bold w-60px h-60px rounded-full mb-8px bg-white">
+        <div :class="{'!bg-primary !text-white':stepNum>=3}" class="border-primary border-5px text-primary flex justify-center items-center text-32px font-bold w-60px h-60px rounded-full mb-8px bg-white">
           3
         </div>
         <div :class="{'opacity-100':stepNum>=2}"  class=" opacity-40 text-primary laFont font-bold">
@@ -39,22 +39,4 @@ const props = defineProps({
     default: 1,
   }
 })
-const list = ref([
-  {
-    num:1,
-    title:'Add File'
-  },
-  {
-    num:2,
-    title:'Add Signature'
-  },
-  {
-    num:3,
-    title:'Done'
-  },
-])
 </script>
-
-<style>
-
-</style>

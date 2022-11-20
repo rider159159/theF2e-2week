@@ -1,51 +1,32 @@
 <template>
   <section class="relative">
     <div class="fixed w-full bg-primary py-8px pl-24px">
-      <img class="w-99px h-56px" src="@/assets/image/index/logo.png" alt="">
+      <router-link to="/">
+        <img class="w-99px h-56px" src="@/assets/image/index/logo.png" alt="">
+      </router-link>
     </div>
     <SideBar @getSignImage="addSignImage" @getDate="addDate"></SideBar>
-    <div class="md:px-8 md:mx-auto">
-      <h1 class="w-full text-center text-[40px] text-[#293845] mb-4">極速簽名 LOGO</h1>
-      <div class="w-full flex justify-center items-center">
-        <router-link to="/step1" :class="{'text-[#6558F5]':route.fullPath==='/step1'}" class="text] text-[28px] mr-6">開始簽名</router-link>
-        <router-link to="/createSign" :class="{'text-[#6558F5]':route.fullPath==='/createSign'}" class="text-[28px]">建立簽名</router-link>
-      </div>
-      <div class="w-full flex justify-around items-center pt-[50px]">
-        <div class="flex flex-col items-center">
-          <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#D1EFEC]">1</span>
-          <p class="text-[40px]">上傳簽署檔案</p>
-        </div>
-        <div class="flex flex-col items-center">
-          <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#E0DEFD]">2</span>
-          <p class="text-[40px]">進行簽署</p>
-        </div>
-        <div class="flex flex-col items-center">
-          <span class="flex justify-center items-center text-[40px] w-[80px] h-[80px] rounded-full bg-[#D1EFEC]">3</span>
-          <p class="text-[40px]">簽署完成</p>
-        </div>
-      </div>
+    <div class="pt-128px mx-10% z-0">
       <div class="flex justify-center w-full pt-[50px]">
-        <button @click="modalController = true" class="bg-blue text-white text-[28px] bg-[#6558F5] decoration-none py-4 px-6 rounded-lg cursor-pointer">選擇簽名檔</button>
+        <Step :stepNum="2"></Step>
       </div>
-      <div class="flex mb-8 justify-center pt-[50px]">
-        <canvas id="canvas" style="border: 1px solid #000"> </canvas>
+      
+      <div class="flex flex-col items-center">
+        <div class="self-end mt-50px mb-20px">
+          <button @click="downloadPDF" type="button" class="font-bold laFont mr-2 !bg-secondary1 text-white w210px h50px flex justify-center items-center rounded-4px border-1px border-#000 hover:shadow-[4px_4px_0px_#000] duration-300">Download</button>
+        </div>
+        <div class="w-max mb-8 px-80px py-100px bg-#F2EFEF rounded-20px">
+          <canvas id="canvas" class=""></canvas>
+        </div>
       </div>
-    <button @click="downloadPDF" class="download">download PDF</button>
     </div>
-    <!-- <Modal @closeModal="modalController = false" :modalController="modalController" width="w-full md:w-2/3 lg:w-1/2">
-      <p class="w-full flex justify-center text-[32px]">選擇簽名</p>
-      <div class="flex flex-col justify-center items-center">
-        <img v-if="localsignImage1" @click="addSignImage(localsignImage1)" :src="localsignImage1" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
-        <img v-if="localsignImage2" @click="addSignImage(localsignImage2)" :src="localsignImage2" class="text-[24px] rounded-xl border border-gray-500 w-[300px] text-center mb-14" alt="">
-      </div>
-    </Modal> -->
   </section>
 </template>
 
 <script setup>
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
   import { fabric } from "fabric"
   import { jsPDF } from "jspdf";
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
 
   let modalController = ref(false)
   const route = useRoute()
@@ -143,7 +124,8 @@
     if (!image) return;
     fabric.Image.fromURL(image, function (image) {
       // 設定簽名出現的位置及大小，後續可調整
-      image.top = 400;
+      image.top = 200;
+      image.left = 100;
       image.scaleX = 0.5;
       image.scaleY = 0.5;
       canvas.add(image);
@@ -153,9 +135,9 @@
   }
 
   function addDate(date){
-    console.log(date)
     var text = new fabric.Text(date, { left: 100, top: 100 });
     canvas.add(text);  
+    canvas.setActiveObject(text);
   }
 
   function downloadPDF(){
